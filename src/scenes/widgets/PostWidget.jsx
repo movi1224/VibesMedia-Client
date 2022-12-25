@@ -92,6 +92,7 @@ const PostWidget = ({
 
         {/* 右边按钮区域 */}
         <FlexBetween gap="1rem">
+          {/* profile页面的post有删除按钮 */}
           {isProfile && (
             <IconButton>
               <DeleteForeverOutlined />
