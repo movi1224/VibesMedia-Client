@@ -23,7 +23,6 @@ const PostWidget = ({
   userPicturePath,
   likes,
   comments,
-  isProfile = false,
 }) => {
   const [isComments, setIsComments] = useState(false) // 是否点击了comment list
   const dispatch = useDispatch()
@@ -92,8 +91,8 @@ const PostWidget = ({
 
         {/* 右边按钮区域 */}
         <FlexBetween gap="1rem">
-          {/* profile页面的post有删除按钮 */}
-          {isProfile && (
+          {/* 如果是当前用户的post会有删除按钮 */}
+          {loggedInUserId === postUserId && (
             <IconButton>
               <DeleteForeverOutlined />
             </IconButton>
