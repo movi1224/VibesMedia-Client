@@ -11,7 +11,7 @@ import Friend from 'components/Friend'
 import WidgetWrapper from 'components/WidgetWrapper'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setPost } from 'state'
+import { setPost, setPosts } from 'state'
 import { SERVER_URL } from 'Constants'
 
 const PostWidget = ({
@@ -47,6 +47,19 @@ const PostWidget = ({
     })
     const updatedPost = await response.json()
     dispatch(setPost({ post: updatedPost }))
+  }
+
+  const deletePost = async () => {
+    const response = await fetch(`${SERVER_URL}/posts/${postId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: loggedInUserId }),
+    })
+    const updatedPosts = await response.json()
+    dispatch(setPosts({ posts: updatedPosts }))
   }
 
   return (
@@ -94,7 +107,7 @@ const PostWidget = ({
         <FlexBetween gap="1rem">
           {/* 如果是当前用户的post会有删除按钮 */}
           {loggedInUserId === postUserId && (
-            <IconButton>
+            <IconButton onClick={deletePost}>
               <DeleteForeverOutlined />
             </IconButton>
           )}
