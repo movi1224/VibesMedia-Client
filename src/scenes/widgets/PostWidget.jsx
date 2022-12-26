@@ -12,6 +12,7 @@ import WidgetWrapper from 'components/WidgetWrapper'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPost } from 'state'
+import { SERVER_URL } from 'Constants'
 
 const PostWidget = ({
   postId,
@@ -36,7 +37,7 @@ const PostWidget = ({
   const main = palette.neutral.main
 
   const patchLike = async () => {
-    const response = await fetch(`https://vibes-media-server.onrender.com/posts/${postId}/like`, {
+    const response = await fetch(`${SERVER_URL}/posts/${postId}/like`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -66,7 +67,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: '0.75rem', marginTop: '0.75rem' }}
-          src={`https://vibes-media-server.onrender.com/assets/${picturePath}`}
+          src={`${SERVER_URL}/assets/${picturePath}`}
         />
       )}
       {/* 下一排按钮区域 */}

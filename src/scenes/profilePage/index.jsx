@@ -7,6 +7,7 @@ import UserWidget from 'scenes/widgets/UserWidget'
 import MyPostWidget from 'scenes/widgets/MyPostWidget'
 import PostsWidget from 'scenes/widgets/PostsWidget'
 import FriendListWidget from 'scenes/widgets/FriendListWidget'
+import { SERVER_URL } from 'Constants'
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null)
@@ -15,7 +16,7 @@ const ProfilePage = () => {
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
 
   const getUser = async () => {
-    const response = await fetch(`https://vibes-media-server.onrender.com/users/${userId}`, {
+    const response = await fetch(`${SERVER_URL}/users/${userId}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
     })

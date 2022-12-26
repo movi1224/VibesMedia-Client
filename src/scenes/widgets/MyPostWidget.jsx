@@ -25,6 +25,7 @@ import WidgetWrapper from 'components/WidgetWrapper'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPosts } from 'state'
+import { SERVER_URL } from 'Constants'
 
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch()
@@ -47,7 +48,7 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append('picture', image)
       formData.append('picturePath', image.name)
     }
-    const response = await fetch(`https://vibes-media-server.onrender.com/posts`, {
+    const response = await fetch(`${SERVER_URL}/posts`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
       body: formData,

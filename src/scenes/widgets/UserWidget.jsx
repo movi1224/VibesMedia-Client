@@ -13,6 +13,7 @@ import WidgetWrapper from 'components/WidgetWrapper'
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { SERVER_URL } from 'Constants'
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null) // useEffect中发送请求去获取user
@@ -26,7 +27,7 @@ const UserWidget = ({ userId, picturePath }) => {
   const main = palette.neutral.main
 
   const getUser = async () => {
-    const response = await fetch(`https://vibes-media-server.onrender.com/users/${userId}`, {
+    const response = await fetch(`${SERVER_URL}/users/${userId}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
     })

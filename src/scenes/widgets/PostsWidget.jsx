@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPosts } from 'state'
 import PostWidget from './PostWidget'
+import { SERVER_URL } from 'Constants'
 
 const PostsWidget = ({ userId, isProfile = false }) => {
   /* 注意两种情况: 1)获取所有posts 2)获取当前user的posts */
@@ -11,7 +12,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getPosts = async () => {
     /* 从服务端获取post并且dispatch setPosts acton给redux用以更新post*/
-    const response = await fetch('https://vibes-media-server.onrender.com/posts', {
+    const response = await fetch(`${SERVER_URL}/posts`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -21,7 +22,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getUserPosts = async () => {
     /* 从服务端获取post并且dispatch setPosts acton给redux用以更新post*/
-    const response = await fetch(`https://vibes-media-server.onrender.com/posts/${userId}`, {
+    const response = await fetch(`${SERVER_URL}/posts/${userId}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
     })

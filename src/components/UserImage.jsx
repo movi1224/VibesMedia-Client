@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-
+import { SERVER_URL } from 'Constants'
 /* 做一个简单样式组件放用户头像  */
 const UserImage = ({ image, size = '60px' }) => {
   return (
@@ -9,7 +9,7 @@ const UserImage = ({ image, size = '60px' }) => {
         width={size}
         height={size}
         alt="user"
-        src={`https://vibes-media-server.onrender.com/assets/${image}`}
+        src={`${SERVER_URL}/assets/${image}`}
       />
     </Box>
   )

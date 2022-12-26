@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 import { setLogin } from 'state'
 import Dropzone from 'react-dropzone'
 import FlexBetween from 'components/FlexBetween'
+import { SERVER_URL } from 'Constants'
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required('required'),
@@ -54,7 +55,7 @@ const Form = () => {
       formData.append(value, values[value])
     }
     formData.append('picturePath', values.picture.name)
-    const savedUserResponse = await fetch('https://vibes-media-server.onrender.com/auth/register', {
+    const savedUserResponse = await fetch(`${SERVER_URL}/auth/register`, {
       method: 'POST',
       body: formData,
     })
@@ -65,7 +66,8 @@ const Form = () => {
   }
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch('https://vibes-media-server.onrender.com/auth/login', {
+    console.log(process.env)
+    const loggedInResponse = await fetch(`${SERVER_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values),
