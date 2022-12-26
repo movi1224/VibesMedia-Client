@@ -19,16 +19,18 @@ const HomePage = () => {
         display={isNonMobileScreens ? 'flex' : 'block'}
         gap="0.5rem"
         justifyContent="space-between">
+        {/* 左侧用户信息框 */}
         <Box flexBasis={isNonMobileScreens ? '26%' : undefined}>
           <UserWidget userId={_id} picturePath={picturePath} />
         </Box>
-
+        {/* 中间feed posts框 */}
         <Box
           flexBasis={isNonMobileScreens ? '42%' : undefined}
           mt={isNonMobileScreens ? undefined : '2rem'}>
           <MyPostWidget picturePath={picturePath} />
           <PostsWidget userId={_id} />
         </Box>
+        {/* 右侧广告和好友框 */}
         {isNonMobileScreens && (
           <Box flexBasis="26%">
             <AdvWidget />
