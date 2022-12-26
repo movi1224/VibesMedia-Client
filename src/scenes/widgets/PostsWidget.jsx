@@ -11,7 +11,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getPosts = async () => {
     /* 从服务端获取post并且dispatch setPosts acton给redux用以更新post*/
-    const response = await fetch('http://localhost:3001/posts', {
+    const response = await fetch('https://vibes-media-server.onrender.com/posts', {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -21,7 +21,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getUserPosts = async () => {
     /* 从服务端获取post并且dispatch setPosts acton给redux用以更新post*/
-    const response = await fetch(`http://localhost:3001/posts/${userId}`, {
+    const response = await fetch(`https://vibes-media-server.onrender.com/posts/${userId}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
     })
