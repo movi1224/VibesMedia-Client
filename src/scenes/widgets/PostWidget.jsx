@@ -3,7 +3,7 @@ import {
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ShareOutlined,
-  DeleteForeverOutlined,
+  DeleteOutlined,
 } from '@mui/icons-material'
 import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material'
 import FlexBetween from 'components/FlexBetween'
@@ -109,11 +109,11 @@ const PostWidget = ({
         </FlexBetween>
 
         {/* 右边按钮区域 */}
-        <FlexBetween gap="1rem">
+        <FlexBetween gap="0.5rem">
           {/* 如果是当前用户的post会有删除按钮 */}
           {loggedInUserId === postUserId && (
             <IconButton onClick={deletePost}>
-              <DeleteForeverOutlined />
+              <DeleteOutlined />
             </IconButton>
           )}
 

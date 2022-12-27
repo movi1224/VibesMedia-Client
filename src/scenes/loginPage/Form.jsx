@@ -183,7 +183,7 @@ const Form = () => {
                         <input {...getInputProps()} />
                         {/* 若上传了则显示图片名字, 否则提示上传图片 */}
                         {!values.picture ? (
-                          <p>Add Picture Here</p>
+                          <p style={{ textAlign: 'center' }}>Add Picture Here</p>
                         ) : (
                           <FlexBetween>
                             <Typography>{values.picture.name}</Typography>
