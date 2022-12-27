@@ -23,7 +23,7 @@ const LoginPage = () => {
         borderRadius="1.5rem"
         backgroundColor={theme.palette.background.alt}>
         <Typography fontWeight="500" variant="h5" sx={{ mb: '1.5rem' }}>
-          Welcome to Vibes Media, the Social Media for Vibings!
+          Welcome to VibesMedia, the Social Media for Vibing!
         </Typography>
         <Form />
       </Box>
