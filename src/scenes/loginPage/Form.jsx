@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Box, Button, TextField, useMediaQuery, Typography, useTheme } from '@mui/material'
+import { Box, TextField, useMediaQuery, Typography, useTheme } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import { Formik } from 'formik'
 import * as yup from 'yup'
@@ -42,6 +43,7 @@ const initialValueLogin = {
 
 const Form = () => {
   const [pageType, setPageType] = useState('login')
+  const [isLoading, setIsLoading] = useState(false)
   const { palette } = useTheme()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -63,10 +65,10 @@ const Form = () => {
     onSubmitProps.resetForm()
 
     if (savedUser) setPageType('login')
+    setIsLoading(false)
   }
 
   const login = async (values, onSubmitProps) => {
-    console.log(process.env)
     const loggedInResponse = await fetch(`${SERVER_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -84,9 +86,11 @@ const Form = () => {
       )
       navigate('/home')
     }
+    setIsLoading(false)
   }
 
   const handleFormSubmit = async (val, onSubmitProps) => {
+    setIsLoading(true)
     if (isLogin) await login(val, onSubmitProps)
     if (isRegister) await register(val, onSubmitProps)
   }
@@ -220,18 +224,23 @@ const Form = () => {
           {/* BUTTONS */}
           <Box>
             {/* login/register时显示不同的button名字 */}
-            <Button
-              fullWidth
-              type="submit"
-              sx={{
-                m: '2rem 0',
-                p: '1rem',
-                backgroundColor: palette.primary.main,
-                color: palette.background.alt,
-                '&:hover': { color: palette.primary.main },
-              }}>
-              {isLogin ? 'LOGIN' : 'REGISTER'}
-            </Button>
+            {
+              <LoadingButton
+                fullWidth
+                type="submit"
+                loading={isLoading}
+                loadingPosition="start"
+                sx={{
+                  m: '2rem 0',
+                  p: '1rem',
+                  backgroundColor: palette.primary.main,
+                  color: palette.background.alt,
+                  '&:hover': { color: palette.primary.main },
+                }}>
+                {isLogin ? 'LOGIN' : 'REGISTER'}
+              </LoadingButton>
+            }
+
             <Typography
               onClick={() => {
                 setPageType(isLogin ? 'register' : 'login')
