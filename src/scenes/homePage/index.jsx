@@ -8,15 +8,18 @@ import AdvWidget from 'scenes/widgets/AdvWidget'
 import FriendListWidget from 'scenes/widgets/FriendListWidget'
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)')
+  const isLargeScreens = useMediaQuery('(min-width:2000px)')
   const { _id, picturePath } = useSelector((state) => state.user)
 
   return (
     <Box>
       <Navbar />
       <Box
-        width="100%"
+        width={isLargeScreens ? '75%' : '100%'}
+        margin="0 auto"
         padding="2rem 6%"
         display={isNonMobileScreens ? 'flex' : 'block'}
+        alignSelf="center"
         gap="0.5rem"
         justifyContent="space-between">
         {/* 左侧用户信息框 */}

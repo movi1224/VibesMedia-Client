@@ -24,6 +24,7 @@ const PostWidget = ({
   userPicturePath,
   likes,
   comments,
+  createdAt,
 }) => {
   const [isComments, setIsComments] = useState(false) // 是否点击了comment list
   const dispatch = useDispatch()
@@ -35,6 +36,7 @@ const PostWidget = ({
   const { palette } = useTheme()
   const primary = palette.primary.main
   const main = palette.neutral.main
+  const timeStamp = new Date(createdAt).toLocaleString()
 
   const patchLike = async () => {
     const response = await fetch(`${SERVER_URL}/posts/${postId}/like`, {
@@ -70,7 +72,7 @@ const PostWidget = ({
         subtitle={location}
         userPicturePath={userPicturePath}
       />
-      <Typography color={main} sx={{ mt: '1rem', wordWrap: 'break-word' }}>
+      <Typography color={main} fontSize="1rem" sx={{ mt: '1rem', wordWrap: 'break-word' }}>
         {description}
       </Typography>
       {/* 如果是带图片的post就放图片 */}
@@ -83,6 +85,9 @@ const PostWidget = ({
           src={`${SERVER_URL}/assets/${picturePath}`}
         />
       )}
+      <Typography textAlign="right" fontSize="0.75rem" sx={{ color: palette.neutral.medium }}>
+        {timeStamp}
+      </Typography>
       {/* 下一排按钮区域 */}
       <FlexBetween mt="0.25rem">
         {/* 装左边按钮的区域 */}

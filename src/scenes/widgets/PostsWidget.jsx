@@ -7,7 +7,8 @@ import { SERVER_URL } from 'Constants'
 const PostsWidget = ({ userId, isProfile = false }) => {
   /* 注意两种情况: 1)获取所有posts 2)获取当前user的posts */
   const dispatch = useDispatch()
-  const posts = useSelector((state) => state.posts)
+  const rawPosts = useSelector((state) => state.posts)
+  const posts = [...rawPosts].reverse()
   const token = useSelector((state) => state.token)
 
   const getPosts = async () => {
@@ -49,6 +50,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
           userPicturePath,
           likes,
           comments,
+          createdAt,
         }) => (
           <PostWidget
             key={_id}
@@ -61,7 +63,8 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             userPicturePath={userPicturePath}
             likes={likes}
             comments={comments}
-            isProfile={isProfile}></PostWidget>
+            isProfile={isProfile}
+            createdAt={createdAt}></PostWidget>
         )
       )}
     </>
