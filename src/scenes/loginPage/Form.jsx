@@ -44,6 +44,7 @@ const initialValueLogin = {
 const Form = () => {
   const [pageType, setPageType] = useState('login')
   const [isLoading, setIsLoading] = useState(false)
+  const [uploadMsg, setUploadMsg] = useState('Please Upload Avatar (<2MB)')
   const { palette } = useTheme()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -99,7 +100,7 @@ const Form = () => {
     /* 利用formik创建form表单 */
     <Formik
       onSubmit={handleFormSubmit}
-      initialValues={isLogin ? initialValueLogin : initialValueRegister}
+      initialValues={initialValueRegister}
       validationSchema={isLogin ? loginSchema : registerSchema}>
       {/* Formik用法就是要包含一堆这些东西 */}
       {({
@@ -114,6 +115,7 @@ const Form = () => {
       }) => (
         <form onSubmit={handleSubmit}>
           {/* 所有的输入填写区域 */}
+          {console.log(values, pageType)}
           <Box
             display="grid"
             gap="30px"
@@ -164,13 +166,23 @@ const Form = () => {
                 />
                 <Box
                   gridColumn="span 4"
-                  border={`1px solid ${palette.neutral.medium}`}
+                  border={`1px solid ${errors.picture ? `#d32f2f` : palette.neutral.medium}`}
                   borderRadius="5px"
                   p="1rem">
                   {/* 设置图片上传 */}
                   <Dropzone
-                    acceptedFiles=".jpg, .jpeg, .png"
+                    accept={{
+                      'image/*': [],
+                    }}
+                    maxSize={2097152}
+                    acceptedFiles=".jpg, .jpeg, .png, .webp, .gif"
                     multiple={false}
+                    validator={(file) => {
+                      if (file.size > 2097152)
+                        setUploadMsg('Image too large! Please upload image < 2MB')
+                      else setUploadMsg('Please Upload Avatar (<2MB)')
+                      return null
+                    }}
                     /* 上传后获取上传图片的名称到values中 - setFieldValue */
                     onDrop={(acceptedFiles) => setFieldValue('picture', acceptedFiles[0])}>
                     {/* 以下两个函数是dropzone要求的, 相当于把dropzone的几个props传到下面的函数中 */}
@@ -183,16 +195,24 @@ const Form = () => {
                         <input {...getInputProps()} />
                         {/* 若上传了则显示图片名字, 否则提示上传图片 */}
                         {!values.picture ? (
-                          <p style={{ textAlign: 'center' }}>Add Picture Here</p>
+                          <p style={{ textAlign: 'center' }}>{uploadMsg}</p>
                         ) : (
                           <FlexBetween>
-                            <Typography>{values.picture.name}</Typography>
+                            <Typography>
+                              {values.picture.name} -{' '}
+                              {(values.picture.size / 1024).toFixed(2) + 'KB'}
+                            </Typography>
                             <EditOutlinedIcon />
                           </FlexBetween>
                         )}
                       </Box>
                     )}
                   </Dropzone>
+                  {touched.picture && errors.picture && (
+                    <Typography mt="0.25rem" color="#d32f2f">
+                      {errors.picture}
+                    </Typography>
+                  )}
                 </Box>
               </>
             )}
@@ -220,26 +240,24 @@ const Form = () => {
               sx={{ gridColumn: 'span 4' }}
             />
           </Box>
-
           {/* BUTTONS */}
           <Box>
             {/* login/register时显示不同的button名字 */}
-            {
-              <LoadingButton
-                fullWidth
-                type="submit"
-                loading={isLoading}
-                loadingPosition="start"
-                sx={{
-                  m: '2rem 0',
-                  p: '1rem',
-                  backgroundColor: palette.primary.main,
-                  color: palette.background.alt,
-                  '&:hover': { color: palette.primary.main },
-                }}>
-                {isLogin ? 'LOGIN' : 'REGISTER'}
-              </LoadingButton>
-            }
+
+            <LoadingButton
+              fullWidth
+              type="submit"
+              loading={isLoading}
+              loadingPosition="start"
+              sx={{
+                m: '2rem 0',
+                p: '1rem',
+                backgroundColor: palette.primary.main,
+                color: palette.background.alt,
+                '&:hover': { color: palette.primary.main },
+              }}>
+              {isLogin ? 'LOGIN' : 'REGISTER'}
+            </LoadingButton>
 
             <Typography
               onClick={() => {
