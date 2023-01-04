@@ -78,7 +78,7 @@ const Form = () => {
     const loggedIn = await loggedInResponse.json()
     onSubmitProps.resetForm()
     if (loggedIn) {
-      // 给redux发送action!
+      // 给redux发送action
       dispatch(
         setLogin({
           user: loggedIn.user,
@@ -98,32 +98,107 @@ const Form = () => {
 
   return (
     /* 利用formik创建form表单 */
-    <Formik
-      onSubmit={handleFormSubmit}
-      initialValues={initialValueRegister}
-      validationSchema={isLogin ? loginSchema : registerSchema}>
-      {/* Formik用法就是要包含一堆这些东西 */}
-      {({
-        values,
-        errors,
-        touched,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        setFieldValue,
-        resetForm,
-      }) => (
-        <form onSubmit={handleSubmit}>
-          {/* 所有的输入填写区域 */}
-          {console.log(values, pageType)}
-          <Box
-            display="grid"
-            gap="30px"
-            gridTemplateColumns="repeat(4,minmax(0,1fr))"
-            sx={{ '&>div': { gridColumn: isNonMobile ? undefined : 'span 4' } }}>
-            {/* Register页面的表单 */}
-            {isRegister && (
-              <>
+    isLogin ? (
+      <Formik
+        onSubmit={handleFormSubmit}
+        initialValues={initialValueLogin}
+        validationSchema={loginSchema}>
+        {/* Formik用法就是要包含一堆这些东西 */}
+        {({ values, errors, touched, handleBlur, handleChange, handleSubmit, resetForm }) => (
+          <form onSubmit={handleSubmit}>
+            {console.log(values, pageType)}
+            {/* 所有的输入填写区域 */}
+            <Box
+              display="grid"
+              gap="30px"
+              gridTemplateColumns="repeat(4,minmax(0,1fr))"
+              sx={{ '&>div': { gridColumn: isNonMobile ? undefined : 'span 4' } }}>
+              {/* 接下来的两项是register和login都要用到的 */}
+              <TextField
+                label="Email"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.email}
+                name="email"
+                error={Boolean(touched.email) && Boolean(errors.email)}
+                helperText={touched.email && errors.email}
+                sx={{ gridColumn: 'span 4' }}
+              />
+              <TextField
+                label="Password"
+                type="password"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.password}
+                name="password"
+                error={Boolean(touched.password) && Boolean(errors.password)}
+                helperText={touched.password && errors.password}
+                sx={{ gridColumn: 'span 4' }}
+              />
+            </Box>
+            {/* BUTTONS */}
+            <Box>
+              {/* login/register时显示不同的button名字 */}
+              <LoadingButton
+                fullWidth
+                type="submit"
+                loading={isLoading}
+                loadingPosition="start"
+                sx={{
+                  m: '2rem 0',
+                  p: '1rem',
+                  backgroundColor: palette.primary.main,
+                  color: palette.background.alt,
+                  '&:hover': { color: palette.primary.main },
+                }}>
+                LOGIN
+              </LoadingButton>
+
+              <Typography
+                onClick={() => {
+                  setPageType('register')
+                  resetForm()
+                }}
+                sx={{
+                  textDecoration: 'underline',
+                  color: palette.primary.main,
+                  '&:hover': { cursor: 'pointer', color: palette.primary.light },
+                }}>
+                Don't have an account? Sign Up here.
+              </Typography>
+            </Box>
+          </form>
+        )}
+      </Formik>
+    ) : (
+      <>
+        <Typography variant="h5" sx={{ mb: '1rem' }}>
+          Please fill the register form:
+        </Typography>
+        <Formik
+          onSubmit={handleFormSubmit}
+          initialValues={initialValueRegister}
+          validationSchema={registerSchema}>
+          {/* Formik用法就是要包含一堆这些东西 */}
+          {({
+            values,
+            errors,
+            touched,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            setFieldValue,
+            resetForm,
+          }) => (
+            <form onSubmit={handleSubmit}>
+              {/* 所有的输入填写区域 */}
+              {console.log(values, pageType)}
+              <Box
+                display="grid"
+                gap="30px"
+                gridTemplateColumns="repeat(4,minmax(0,1fr))"
+                sx={{ '&>div': { gridColumn: isNonMobile ? undefined : 'span 4' } }}>
+                {/* Register页面的表单 */}
                 <TextField
                   label="First Name"
                   onBlur={handleBlur}
@@ -214,69 +289,65 @@ const Form = () => {
                     </Typography>
                   )}
                 </Box>
-              </>
-            )}
 
-            {/* 接下来的两项是register和login都要用到的 */}
-            <TextField
-              label="Email"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.email}
-              name="email"
-              error={Boolean(touched.email) && Boolean(errors.email)}
-              helperText={touched.email && errors.email}
-              sx={{ gridColumn: 'span 4' }}
-            />
-            <TextField
-              label="Password"
-              type="password"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.password}
-              name="password"
-              error={Boolean(touched.password) && Boolean(errors.password)}
-              helperText={touched.password && errors.password}
-              sx={{ gridColumn: 'span 4' }}
-            />
-          </Box>
-          {/* BUTTONS */}
-          <Box>
-            {/* login/register时显示不同的button名字 */}
+                {/* 接下来的两项是register和login都要用到的 */}
+                <TextField
+                  label="Email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.email}
+                  name="email"
+                  error={Boolean(touched.email) && Boolean(errors.email)}
+                  helperText={touched.email && errors.email}
+                  sx={{ gridColumn: 'span 4' }}
+                />
+                <TextField
+                  label="Password"
+                  type="password"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.password}
+                  name="password"
+                  error={Boolean(touched.password) && Boolean(errors.password)}
+                  helperText={touched.password && errors.password}
+                  sx={{ gridColumn: 'span 4' }}
+                />
+              </Box>
+              {/* BUTTONS */}
+              <Box>
+                <LoadingButton
+                  fullWidth
+                  type="submit"
+                  loading={isLoading}
+                  loadingPosition="start"
+                  sx={{
+                    m: '2rem 0',
+                    p: '1rem',
+                    backgroundColor: palette.primary.main,
+                    color: palette.background.alt,
+                    '&:hover': { color: palette.primary.main },
+                  }}>
+                  REGISTER
+                </LoadingButton>
 
-            <LoadingButton
-              fullWidth
-              type="submit"
-              loading={isLoading}
-              loadingPosition="start"
-              sx={{
-                m: '2rem 0',
-                p: '1rem',
-                backgroundColor: palette.primary.main,
-                color: palette.background.alt,
-                '&:hover': { color: palette.primary.main },
-              }}>
-              {isLogin ? 'LOGIN' : 'REGISTER'}
-            </LoadingButton>
-
-            <Typography
-              onClick={() => {
-                setPageType(isLogin ? 'register' : 'login')
-                resetForm()
-              }}
-              sx={{
-                textDecoration: 'underline',
-                color: palette.primary.main,
-                '&:hover': { cursor: 'pointer', color: palette.primary.light },
-              }}>
-              {isLogin
-                ? "Don't have an account? Sign Up here."
-                : 'Already have an account? Login here.'}
-            </Typography>
-          </Box>
-        </form>
-      )}
-    </Formik>
+                <Typography
+                  onClick={() => {
+                    setPageType('login')
+                    resetForm()
+                  }}
+                  sx={{
+                    textDecoration: 'underline',
+                    color: palette.primary.main,
+                    '&:hover': { cursor: 'pointer', color: palette.primary.light },
+                  }}>
+                  Already have an account? Login here.
+                </Typography>
+              </Box>
+            </form>
+          )}
+        </Formik>
+      </>
+    )
   )
 }
 
